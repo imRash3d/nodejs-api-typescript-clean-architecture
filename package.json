@@ -1,15 +1,30 @@
 {
-  "name": "cls",
+  "name": "nodejs-api-typescript-clean-architecture",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node dist/index.js",
+    "dev":"tsc-watch --onSuccess \"node ./dist/index.js\"",
+    "build":"tsc",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com-personal:imRash3d/nodejs-api-typescript-clean-architecture.git"
   },
+  "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.9.0",
+    "tsc-watch": "^6.0.4",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  }
 }
