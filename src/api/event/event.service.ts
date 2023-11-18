@@ -1,47 +1,53 @@
-import Event from "./event";
-import { IEventRepository } from "./event-repository.interface";
+
+import { Event, EventDto } from "./event";
+import IEventRepository from "./event-repository.interface";
+import { injectable, inject } from 'tsyringe';
 
 
 
-export class EventService {
-    constructor(private readonly eventRepo: IEventRepository) {
-
+@injectable()
+export default class EventService {
+    constructor(
+        @inject('IEventRepository') private readonly _eventRepo: IEventRepository
+    ) {
     }
+
 
 
 
     async getAllEvents() {
-        return await this.eventRepo.getAllEvent();
+        return await this._eventRepo.getAllEvent();
     }
 
 
 
-    async createEvent(
 
-        eventName: string,
+    async createEvent(
+        name: string,
         description: string,
-        eventDate: Date,
+        date: string,
         startTime: string,
         endTime: string,
         venueId: string
     ) {
-        const event = new Event(
-            "randmom_id",
-            eventName,
-            description,
-            eventDate,
-            startTime,
-            endTime,
-            venueId
 
-        );
-        return await this.eventRepo.create(event);
+
+        const event: EventDto = {
+            name: name,
+            description: description,
+            date: date,
+            startTime: startTime,
+            endTime: endTime,
+            venueId: venueId,
+        };
+
+        return await this._eventRepo.create(event);
     }
 
     async getEventById(id: string) {
         try {
 
-            var event = await this.eventRepo.getEventById(id);
+            var event = await this._eventRepo.getEventById(id);
             if (!event) {
                 throw new Error("event not found id " + id);
             }
@@ -57,14 +63,15 @@ export class EventService {
 
         try {
 
-            var event = await this.eventRepo.getEventById(id);
+            var event = await this._eventRepo.getEventById(id);
             if (!event) {
                 throw new Error("event not found id " + id);
             }
 
-            this.eventRepo.delete(id);
+            this._eventRepo.delete(id);
         }
         catch (error) {
+
 
         }
 
@@ -83,7 +90,7 @@ export class EventService {
         try {
 
 
-            var event = await this.eventRepo.getEventById(id);
+            var event = await this._eventRepo.getEventById(id);
             if (!event) {
                 throw new Error("event not found id " + id);
             }
@@ -98,7 +105,7 @@ export class EventService {
 
             });
 
-            this.eventRepo.update(mappedObject);
+            await this._eventRepo.update(mappedObject, id);
         }
         catch (error) {
 
